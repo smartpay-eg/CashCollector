@@ -302,4 +302,246 @@ lang=ar_AA
 
 ---
 
+### Pay Service
+
+**Path:** `/api/create_machine_request`
+
+**Method:** `POST`
+
+**Headers:**
+
+- `charset: utf-8`
+- `access_token: <access_token>`
+- `machine_serial: <machine_serial>`
+- `Content-Type: application/x-www-form-urlencoded`
+
+**Request:**
+
+```text
+requestType=pay_service_bill
+productId=23
+billingAcct=01110000000
+trxAmt=20
+inquiryTrxNumber=2411123471661622
+feesAmt=5.0
+pmtAmts=[{"Sequence": 1, "AmtDue": 20}]
+```
+
+- `requestType`: Payment request type.
+- `productId`: ID of the product/service.
+- `billingAcct`: Billing account number.
+- `trxAmt`: Transaction amount.
+- `inquiryTrxNumber`: Inquiry transaction number.
+- `feesAmt`: Fees associated with the transaction.
+- `pmtAmts`: List of amounts to be paid.
+
+**Response:**
+
+```json
+{
+    "count": 19,
+    "data": {
+        "message": "Pay Service Bill request was submitted successfully.",
+        "trxNumber": "2411123471681622",
+        "billingAcct": "01110000000",
+        "trxAmt": 20.0,
+        "feesAmt": 5.0
+    }
+}
+```
+
+---
+
+### Cancel Payment
+
+**Path:** `/api/cancel_request`
+
+**Method:** `POST`
+
+**Headers:**
+
+- `charset: utf-8`
+- `access_token: <access_token>`
+- `machine_serial: <machine_serial>`
+- `Content-Type: application/x-www-form-urlencoded`
+
+**Request:**
+
+```text
+inquiryTransactionId=2410108603009
+```
+
+- `inquiryTransactionId`: ID of the inquiry transaction to be canceled.
+
+**Response:**
+
+```json
+{
+    "count": 47,
+    "data": "Cancel REQ Number (2410109043011) successfully!"
+}
+```
+
+---
+
+## Wallets
+
+### Get Wallet Balance
+
+**Path:** `/api/get_my_wallets`
+
+**Method:** `POST`
+
+**Headers:**
+
+- `charset: utf-8`
+- `access_token: <access_token>`
+- `machine_serial: <machine_serial>`
+
+**Request:** None
+
+**Response:**
+
+```json
+{
+    "count": 2,
+    "data": [
+        {
+            "id": 1324,
+            "name": "Cash wallet",
+            "wallet_balance": 964.58,
+            "available_amount": 864.58
+        }
+    ]
+}
+```
+
+---
+
+### Transfer Wallet Recharge
+
+**Path:** `/api/recharge_mobile_wallet`
+
+**Method:** `POST`
+
+**Headers:**
+
+- `charset: utf-8`
+- `access_token: <access_token>`
+- `machine_serial: <machine_serial>`
+
+**Request:**
+
+```text
+transfer_to=000011
+trans_amount=500
+wallet_id=77
+wallet_dest_id=43
+```
+
+- `transfer_to`: Reference of the user to whom the wallet recharge is directed.
+- `trans_amount`: Amount to be transferred.
+- `wallet_id`: Source wallet ID.
+- `wallet_dest_id`: Destination wallet ID.
+
+**Response:**
+
+```json
+{
+    "count": 121,
+    "data": "Wallet for User (Test user) recharged successfully with amount 500.0 EGP."
+}
+```
+
+---
+
+### Get Wallet Transactions
+
+**Path:** `/api/get_wallet_trans`
+
+**Method:** `POST`
+
+**Headers:**
+
+- `charset: utf-8`
+- `access_token: <access_token>`
+- `machine_serial: <machine_serial>`
+- `Content-Type: application/x-www-form-urlencoded`
+
+**Request:**
+
+```text
+limit=0
+fields=["request_id", "label", "amount", "create_date"]
+domain=[("wallet_id","!=",False)]
+offset=0
+```
+
+- `limit`: Maximum number of transactions to retrieve.
+- `fields`: Fields to be included in the response.
+- `domain`: Filter criteria for the transactions.
+- `offset`: Number of records to skip.
+
+**Response:**
+
+```json
+{
+    "count": 3,
+    "data": [
+        {
+            "id": 8344871,
+            "label": "Pay Service Bill",
+            "amount": "25.0",
+            "create_date": "2021-11-16T22:36:46.817262"
+        }
+    ]
+}
+```
+
+---
+
+### Get Wallet Transaction Summary
+
+**Path:** `/api/get_wallet_trans_summary`
+
+**Method:** `POST`
+
+**Headers:**
+
+- `charset: utf-8`
+- `access_token: <access_token>`
+- `machine_serial: <machine_serial>`
+- `Content-Type: application/x-www-form-urlencoded`
+
+**Request:**
+
+```text
+domain=[("create_date", ">=", "2022-11-01"), ("create_date", "<=", "2022-11-27")]
+```
+
+- `domain`: Date range for filtering transactions.
+
+**Response:**
+
+```json
+{
+    "count": 4,
+    "data": {
+        "open": {
+            "opening_balance": {
+                "label": "Opening Balance",
+                "value": "-839.54"
+            }
+        },
+        "end": {
+            "ending_balance": {
+                "label": "Ending Balance",
+                "value": "-964.58"
+            }
+        }
+    }
+}
+```
+
+---
 
