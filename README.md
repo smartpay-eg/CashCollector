@@ -214,6 +214,21 @@ limit=0
                 "ServiceType": "BILLS",
                 "ServiceName": "فواتير الموبايل",
                 "BillTypeAcctLabel": "رقم المحمول",
+                "AcctInputMethod": "KP",
+                "BillTypeExtraRefKeys": [
+                    {
+                        "key": "contract_number",
+                        "label": "Contract Number",
+                        "input_method": "KP",
+                        "required": true
+                    },
+                    {
+                        "key": "service_area",
+                        "label": "Service Area",
+                        "input_method": "SC",
+                        "required": false
+                    }
+                ],
                 "IsHidden": false,
                 "PaymentRules": {
                     "IsInqRqr": false,
@@ -237,21 +252,36 @@ limit=0
 }
 ```
 
-- `biller_info` description:
+- **`biller_info` field descriptions:**
   - `Name`: Name of the service.
-  - `PmtType`: Payment type (e.g., `POST`).
+  - `PmtType`: Payment type:
+    - `POST`: Post-payment, requires inquiry.
+    - `PREP`: Prepaid payment, check `PaymentRules.IsInqRqr` to determine if an inquiry is required.
+    - `VOUCH`: Voucher, payment is direct without inquiry.
   - `ServiceType`: Type of the service (e.g., `BILLS`).
   - `ServiceName`: Name of the bill.
-  - `BillTypeAcctLabel`: Label for the account.
+  - `BillTypeAcctLabel`: Label for the primary input field (POST and PREP types only).
+  - `AcctInputMethod`: Input method for the primary field:
+    - `KP`: Keypad (default).
+    - `SC`: Smart card (e.g., for prepaid utilities).
+    - `GSC`: Gas smart card.
+    - `WSC`: Water smart card.
+  - `BillTypeExtraRefKeys`: Array of additional input fields, each with:
+    - `key`: Field key.
+    - `label`: Field label.
+    - `input_method`: Input method (e.g., `KP`, `SC`).
+    - `required`: Whether the field is mandatory.
   - `IsHidden`: Whether the service is hidden.
   - `PaymentRules`: Rules governing payment.
+    - `IsInqRqr`: Whether inquiry is required before payment.
+    - Other rules define acceptance criteria (e.g., fractional amounts, advanced payments).
   - `BillTypeStatus`: Status of the bill type.
-  - `AllowRctRePrint`: Allow receipt reprint.
+  - `AllowRctRePrint`: Whether receipt reprinting is allowed.
   - `OTPEnabled`: Whether OTP is enabled.
   - `ValidationEnabled`: Whether validation is required.
-  - `Timeout`: Timeout rule.
+  - `Timeout`: Timeout rule for the transaction.
   - `OTPRequired`: Whether OTP is required.
-  - `IsTermsConditionReq`: Whether terms and conditions are required.
+  - `IsTermsConditionReq`: Whether terms and conditions must be acknowledged.
 
 ---
 
