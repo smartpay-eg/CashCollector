@@ -257,7 +257,7 @@ limit=0
   - `PmtType`: Payment type:
     - `POST`: Post-payment, requires inquiry.
     - `PREP`: Prepaid payment, check `PaymentRules.IsInqRqr` to determine if an inquiry is required.
-    - `VOUCH`: Voucher, payment is direct without inquiry.
+    - `VOCH`: Voucher, payment is direct without inquiry.
   - `ServiceType`: Type of the service (e.g., `BILLS`).
   - `ServiceName`: Name of the bill.
   - `BillTypeAcctLabel`: Label for the primary input field (POST and PREP types only).
@@ -282,7 +282,37 @@ limit=0
   - `Timeout`: Timeout rule for the transaction.
   - `OTPRequired`: Whether OTP is required.
   - `IsTermsConditionReq`: Whether terms and conditions must be acknowledged.
+Here's a clean table representation of your data for better readability:
 
+| **Element Name**         | **Type**      | **Cardinality** | **Description**                                   |
+|---------------------------|---------------|------------------|-------------------------------------------------|
+| **PmtType**              | Enum          | +                | POST, PREP, VOCH                                |
+| **BillTypeAcctLabel**    | String        | +                |                                                 |
+| **IsHidden**             | Boolean       | +/-              |                                                 |
+| **AcctInputMethod**      | Enum          | +/-              |                                                 |
+| **BillTypeExtraRefKeys** | Array         | +/-              |                                                 |
+| **BillTypeRefKey**       | Object        | -                |                                                 |
+| **BillTypeRefKey -> Key** | String       | +                |                                                 |
+| **BillTypeRefKey -> Label** | String     | +                |                                                 |
+| **BillTypeRefKey -> Required** | Boolean | +                |                                                 |
+| **BillTypeRefKey -> IsCnfrmRequired** | Boolean | +/-       |                                                 |
+| **BillTypeRefKey -> InputMethod** | Enum  | +/-              |                                                 |
+| **BillTypeRefKey -> IsInputMasked** | Boolean | +/-          |                                                 |
+| **PaymentRules**         | Object        | +/-              |                                                 |
+| **PaymentRules -> IsInqRqr** | Boolean   | +/-              |                                                 |
+| **PaymentRules -> IsFracAcpt** | Boolean | +/-              | Default: false                                  |
+| **PaymentRules -> IsPrtAcpt** | Boolean | +/-              |                                                 |
+| **PaymentRules -> IsOvrAcpt** | Boolean | +/-              |                                                 |
+| **PaymentRules -> IsAdvAcpt** | Boolean | +/-              |                                                 |
+| **PaymentRules -> IsAcptCardPmt** | Boolean | +/-            | Default: false                                  |
+| **Type**                 | Enum          | +/-              | CASHOUT / CASHININT                             |
+| **PaymentRanges**        | Object        | +/-              |                                                 |
+| **PaymentRanges -> PaymentRangeType** | Array | +/-          |                                                 |
+| **PaymentRanges -> PaymentRangeType -> Lower** | Object | +   |                                                 |
+| **PaymentRanges -> PaymentRangeType -> Lower -> Amt** | Decimal | + |                                                 |
+| **PaymentRanges -> PaymentRangeType -> Upper** | Object | +   |                                                 |
+| **PaymentRanges -> PaymentRangeType -> Upper -> Amt** | Decimal | + |                                                 |
+| **HasCorrelation**       | Boolean       | +/-              | Default: false                                  |
 ---
 
 ## Payments
