@@ -35,7 +35,7 @@ This guide provides detailed instructions for integrating and using the SmartPay
     "company_id": 1,
     "access_token": "access_token_4bfdb0a31410c799c3514d5033b044c36287a348",
     "expires_in": "86400",
-    "Force_Update": false
+    "force_update": false
 }
 ```
 
